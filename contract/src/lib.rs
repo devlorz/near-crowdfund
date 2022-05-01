@@ -71,6 +71,7 @@ impl Contract{
         
     }
     
+    #[payable]
     pub fn add_donation(&mut self, id:usize, amount:u128) {
         let transfer_amount: u128 = ONE_NEAR * amount;
         let crowdfund: &mut Crowdfund = self.crowdfunds.get_mut(id).unwrap();
