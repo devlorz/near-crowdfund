@@ -42,7 +42,7 @@ impl Contract{
         }
     }
 
-    pub fn add_crowdfund(&mut self, title: String, donate:u128,description: String) {
+    pub fn add_crowdfund(&mut self, title: String, donate:u128, description: String, image_url: String) {
             
         let id = self.crowdfunds.len() as i32;
         
@@ -50,7 +50,8 @@ impl Contract{
             id,
             title,
             donate,
-            description
+            description,
+            image_url
         ));
         env::log("Added a new crowdfund".as_bytes());
     }

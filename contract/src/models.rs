@@ -19,11 +19,12 @@ pub struct Crowdfund{
     pub total_donations: u128,
     pub total_votes: i64,
     description: String,
-    pub votes: Vec<String>
+    pub votes: Vec<String>,
+    image_url: String,
 }
 
 impl Crowdfund{
-    pub fn new(id:i32, title: String, donation_target:u128, description: String) -> Self {
+    pub fn new(id:i32, title: String, donation_target:u128, description: String, image_url: String) -> Self {
         
         Crowdfund{
             id,
@@ -35,6 +36,7 @@ impl Crowdfund{
             total_votes : 0,
             description,
             votes: vec![],
+            image_url,
         }
     }
 }
