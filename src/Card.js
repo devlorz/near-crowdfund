@@ -15,10 +15,12 @@ import {
   Button,
 } from "@mantine/core";
 import Big from "bignumber.js";
+import { utils } from "near-api-js";
 
 const BOATLOAD_OF_GAS = Big(3)
   .times(10 ** 13)
   .toFixed();
+const ONE_NEAR = utils.format.parseNearAmount("1");
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -58,19 +60,19 @@ export default function ArticleCard({ donation, className, ...others }) {
   const [value, setValue] = useState(1);
 
   const onDonate = async (e) => {
-    e.preventDefault();
-    console.log(value);
-    await window.contract.add_donation(
-      {
-        id: donation.id,
-        amount: value * 1,
-      },
-      BOATLOAD_OF_GAS,
-      Big(value)
-        .times(10 ** 24)
-        .toFixed()
-    );
-    window.location.reload;
+    if (value > 0) {
+      e.preventDefault();
+      await window.contract.add_donation(
+        {
+          id: donation.id,
+          amount: value * 1,
+        },
+        BOATLOAD_OF_GAS,
+        Big(value)
+          .times(10 ** 24)
+          .toFixed()
+      );
+    }
   };
 
   return (
@@ -84,11 +86,17 @@ export default function ArticleCard({ donation, className, ...others }) {
         <Image src={donation.image_url} height={180} />
       </Card.Section>
 
-      <Text className={classes.title} weight={500}>
+      <Text className={classes.title} weight={900}>
         {donation.title}
       </Text>
 
-      <Text size="sm" color="dimmed" lineClamp={6}>
+      <Text weight={500}>Donation Target: {donation.donation_target} NEAR</Text>
+
+      <Text weight={500}>
+        Total Donation: {donation.total_donations / ONE_NEAR} NEAR
+      </Text>
+
+      <Text size="sm" color="dimmed" lineClamp={5}>
         {donation.description}
       </Text>
 

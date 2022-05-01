@@ -13,32 +13,14 @@ const { networkId } = getConfig(process.env.NODE_ENV || "development");
 export default function App() {
   const [donations, setDonations] = React.useState([]);
 
-  // when the user has not yet interacted with the form, disable the button
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
+  React.useEffect(() => {
+    if (window.walletConnection.isSignedIn()) {
+      window.contract.list_crowdfunds().then((res) => {
+        setDonations(res);
+      });
+    }
+  }, []);
 
-  // after submitting the form, we want to show Notification
-  const [showNotification, setShowNotification] = React.useState(false);
-
-  // The useEffect hook can be used to fire side-effects during render
-  // Learn more: https://reactjs.org/docs/hooks-intro.html
-  React.useEffect(
-    () => {
-      // in this case, we only care to query the contract when signed in
-      if (window.walletConnection.isSignedIn()) {
-        window.contract.list_crowdfunds().then((res) => {
-          console.log(res);
-          setDonations(res);
-        });
-      }
-    },
-
-    // The second argument to useEffect tells React when to re-run the effect
-    // Use an empty array to specify "only run on first render"
-    // This works because signing into NEAR Wallet reloads the page
-    []
-  );
-
-  // if not signed in, return early with sign-in prompt
   if (!window.walletConnection.isSignedIn()) {
     return (
       <Layout buttonClick={login}>
