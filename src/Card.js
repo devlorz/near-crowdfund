@@ -14,6 +14,11 @@ import {
   NumberInput,
   Button,
 } from "@mantine/core";
+import Big from "bignumber.js";
+
+const BOATLOAD_OF_GAS = Big(3)
+  .times(10 ** 13)
+  .toFixed();
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -47,17 +52,26 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function ArticleCard({
-  className,
-  image,
-  title,
-  description,
-  // author,
-  ...others
-}) {
+export default function ArticleCard({ donation, className, ...others }) {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   const [value, setValue] = useState(1);
+
+  const onDonate = async (e) => {
+    e.preventDefault();
+    console.log(value);
+    await window.contract.add_donation(
+      {
+        id: donation.id,
+        amount: value * 1,
+      },
+      BOATLOAD_OF_GAS,
+      Big(value)
+        .times(10 ** 24)
+        .toFixed()
+    );
+    window.location.reload;
+  };
 
   return (
     <Card
@@ -67,27 +81,21 @@ export default function ArticleCard({
       {...others}
     >
       <Card.Section>
-        <Image src={image} height={180} />
+        <Image src={donation.image_url} height={180} />
       </Card.Section>
 
       <Text className={classes.title} weight={500}>
-        {title}
+        {donation.title}
       </Text>
 
-      <Text size="sm" color="dimmed" lineClamp={4}>
-        {description}
+      <Text size="sm" color="dimmed" lineClamp={6}>
+        {donation.description}
       </Text>
 
       <Group position="apart" className={classes.footer}>
         <Center>
           <NumberInput value={value} onChange={setValue} />
-          <Button
-            onClick={() => {
-              console.log(value);
-            }}
-          >
-            Donate
-          </Button>
+          <Button onClick={onDonate}>Donate</Button>
         </Center>
       </Group>
     </Card>

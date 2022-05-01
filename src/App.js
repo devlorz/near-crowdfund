@@ -11,8 +11,7 @@ import getConfig from "./config";
 const { networkId } = getConfig(process.env.NODE_ENV || "development");
 
 export default function App() {
-  // use React Hooks to store greeting in component state
-  const [greeting, set_greeting] = React.useState();
+  const [donations, setDonations] = React.useState([]);
 
   // when the user has not yet interacted with the form, disable the button
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -26,6 +25,10 @@ export default function App() {
     () => {
       // in this case, we only care to query the contract when signed in
       if (window.walletConnection.isSignedIn()) {
+        window.contract.list_crowdfunds().then((res) => {
+          console.log(res);
+          setDonations(res);
+        });
       }
     },
 
@@ -49,7 +52,7 @@ export default function App() {
   return (
     <Layout buttonClick={logout} isLoggedIn={true}>
       <Content />
-      <List />
+      <List donations={donations} />
     </Layout>
   );
 }

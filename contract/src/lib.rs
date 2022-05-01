@@ -77,7 +77,7 @@ impl Contract{
         crowdfund.total_donations = crowdfund.total_donations + transfer_amount;
         self.donations.push(Donation::new());
        
-       Promise::new(env::predecessor_account_id()).transfer(transfer_amount);
+    //    Promise::new(env::predecessor_account_id()).transfer(transfer_amount);
       env::log("You have donated succesfully".as_bytes());
     }
     
