@@ -1,5 +1,12 @@
 import React from "react";
-import { createStyles, Header, Container, Group, Button } from "@mantine/core";
+import {
+  createStyles,
+  Header,
+  Container,
+  Group,
+  Button,
+  Title,
+} from "@mantine/core";
 
 // import logo from "./assets/logo.png";
 
@@ -58,6 +65,7 @@ export default function HeaderAction({ buttonClick, isLoggedIn }) {
     <Header height={HEADER_HEIGHT} mb={30} fixed>
       <Container className={classes.inner} fluid>
         {/* <img src={logo} alt="logo" height={30} /> */}
+        <Title order={3}>Donation for Good</Title>
         <Group spacing={5} className={classes.links}>
           {/* {items} */}
         </Group>
