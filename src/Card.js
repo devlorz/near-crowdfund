@@ -75,6 +75,8 @@ export default function ArticleCard({ donation, className, ...others }) {
     }
   };
 
+  const target = new Big(donation.total_donations).dividedBy(ONE_NEAR);
+
   return (
     <Card
       withBorder
@@ -92,9 +94,7 @@ export default function ArticleCard({ donation, className, ...others }) {
 
       <Text weight={500}>Donation Target: {donation.donation_target} NEAR</Text>
 
-      <Text weight={500}>
-        Total Donation: {donation.total_donations / ONE_NEAR} NEAR
-      </Text>
+      <Text weight={500}>Total Donation: {target.toString()} NEAR</Text>
 
       <Text size="sm" color="dimmed" lineClamp={5}>
         {donation.description}
